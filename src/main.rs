@@ -8,14 +8,14 @@ use task_manager::TaskManager;
 use tonic::transport::Server;
 use tracing::info;
 
-use opentelemetry::runtime::Tokio;
-use opentelemetry::sdk::propagation::TraceContextPropagator;
+use opentelemetry::global;
 use opentelemetry_otlp::WithExportConfig;
+use opentelemetry_sdk::{propagation::TraceContextPropagator, runtime::Tokio};
 use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 fn init_tracing() -> Result<(), Box<dyn std::error::Error>> {
-    opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
+    global::set_text_map_propagator(TraceContextPropagator::new());
 
     let exporter = opentelemetry_otlp::new_exporter().tonic();
     let tracer = opentelemetry_otlp::new_pipeline()
@@ -57,6 +57,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let http_server = AxumServer::bind(&http_addr).serve(http_router.into_make_service());
 
     tokio::try_join!(grpc_server, http_server)?;
-    opentelemetry::global::shutdown_tracer_provider();
+    global::shutdown_tracer_provider();
     Ok(())
 }
