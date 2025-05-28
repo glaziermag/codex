@@ -1,4 +1,7 @@
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tonic_build::compile_protos("proto/task.proto")?;
-    Ok(())
+
+fn main() {
+    tonic_build::configure()
+        .build_server(false)
+        .compile(&["proto/task/v1/task.proto"], &["proto"]).unwrap();
+
 }
