@@ -37,4 +37,5 @@ Use `just` to run common tasks. The `dev` recipe starts the application and `ci`
 ```bash
 just dev
 just ci
+```
 
