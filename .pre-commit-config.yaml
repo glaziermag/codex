@@ -13,12 +13,12 @@ repos:
         pass_filenames: false
       - id: buf-lint
         name: buf lint
-        entry: buf lint
+        entry: buf lint proto
         language: system
         pass_filenames: false
       - id: helm-lint
         name: helm lint
-        entry: helm lint charts/
+        entry: helm lint charts/taskd
         language: system
         pass_filenames: false
 
