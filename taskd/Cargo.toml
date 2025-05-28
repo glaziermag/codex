@@ -1,0 +1,3 @@
+[workspace]
+members = ["taskd-core", "taskd-api"]
+resolver = "2"
