@@ -25,3 +25,18 @@ python -m taskd_api.service
 The service listens on port `50051` by default and requires a running
 PostgreSQL database configured via the `DATABASE_URL` environment
 variable.
+
+## Development
+
+Use `just` to run common tasks. The `dev` recipe starts the application and
+`ci` runs the checks used in CI:
+
+```bash
+just dev
+just ci
+```
+
+Pre-commit hooks are configured in `.pre-commit-config.yaml` and include
+`rustfmt`, `clippy`, `buf`, and Helm linting.
+
+
