@@ -28,7 +28,9 @@ variable.
 
 ## Observability
 
-Tracing is exported using the OTLP protocol. An example Grafana dashboard and a Prometheus `ServiceMonitor` can be found in the `monitoring/` directory.
+Tracing is exported using the OTLP protocol. Prometheus metrics are exposed on `/metrics` from the HTTP server. An example Grafana dashboard and a Prometheus `ServiceMonitor` can be found in the `monitoring/` directory.
+
+To enable metrics locally, run the application and scrape `localhost:3000/metrics`.
 
 ## Development
 

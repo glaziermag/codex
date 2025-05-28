@@ -11,10 +11,11 @@ use tracing::info;
 use opentelemetry::runtime::Tokio;
 use opentelemetry::sdk::propagation::TraceContextPropagator;
 use opentelemetry_otlp::WithExportConfig;
+use opentelemetry_prometheus::PrometheusHandle;
 use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-fn init_tracing() -> Result<(), Box<dyn std::error::Error>> {
+fn init_tracing() -> Result<PrometheusHandle, Box<dyn std::error::Error>> {
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
 
     let exporter = opentelemetry_otlp::new_exporter().tonic();
@@ -28,7 +29,9 @@ fn init_tracing() -> Result<(), Box<dyn std::error::Error>> {
         .with(tracing_subscriber::fmt::layer())
         .with(otel_layer)
         .try_init()?;
-    Ok(())
+
+    let metrics_exporter = opentelemetry_prometheus::exporter().init();
+    Ok(metrics_exporter)
 }
 
 use std::net::SocketAddr;
@@ -41,11 +44,11 @@ pub mod task {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    init_tracing()?;
+    let metrics_handle = init_tracing()?;
     let manager = TaskManager::new();
 
     let grpc_service = service(manager.clone());
-    let http_router = http::router(manager.clone());
+    let http_router = http::router(manager.clone(), metrics_handle.clone());
 
     let grpc_addr: SocketAddr = "0.0.0.0:50051".parse()?;
     let http_addr: SocketAddr = "0.0.0.0:3000".parse()?;
