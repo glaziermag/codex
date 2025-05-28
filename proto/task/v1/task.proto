@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package task.v1;
+
+// Represents a task with an id and name.
+message Task {
+  string id = 1;
+  string name = 2;
+}
+
+// Request to create a task.
+message CreateTaskRequest {
+  Task task = 1;
+}
+
+// Response returned after creating a task.
+message CreateTaskResponse {
+  Task task = 1;
+}
