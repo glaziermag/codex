@@ -1,8 +1,9 @@
 use tonic::{Request, Response, Status};
 
-use crate::task::{
+use crate::task::v1::{
     task_service_server::{TaskService, TaskServiceServer},
-    *,
+    CreateTaskRequest, CreateTaskResponse, ListTasksRequest, ListTasksResponse,
+    Task as TaskProto,
 };
 use crate::task_manager::{Task, TaskManager};
 use tracing::instrument;
@@ -21,12 +22,14 @@ impl TaskService for MyTaskService {
     async fn create_task(
         &self,
         request: Request<CreateTaskRequest>,
-    ) -> Result<Response<TaskProto>, Status> {
+    ) -> Result<Response<CreateTaskResponse>, Status> {
         let title = request.into_inner().title;
         let task = self.manager.create_task(title);
-        let reply = TaskProto {
-            id: task.id,
-            title: task.title,
+        let reply = CreateTaskResponse {
+            task: Some(TaskProto {
+                id: task.id,
+                title: task.title,
+            }),
         };
         Ok(Response::new(reply))
     }
@@ -35,7 +38,7 @@ impl TaskService for MyTaskService {
     async fn list_tasks(
         &self,
         _request: Request<ListTasksRequest>,
-    ) -> Result<Response<TaskList>, Status> {
+    ) -> Result<Response<ListTasksResponse>, Status> {
         let tasks = self.manager.list_tasks();
         let tasks_proto = tasks
             .into_iter()
@@ -44,7 +47,7 @@ impl TaskService for MyTaskService {
                 title: t.title,
             })
             .collect();
-        let reply = TaskList { tasks: tasks_proto };
+        let reply = ListTasksResponse { tasks: tasks_proto };
         Ok(Response::new(reply))
     }
 }
