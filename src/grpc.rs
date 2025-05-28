@@ -5,7 +5,7 @@ use crate::task::v1::{
     CreateTaskRequest, CreateTaskResponse, ListTasksRequest, ListTasksResponse,
     Task as TaskProto,
 };
-use crate::task_manager::{Task, TaskManager};
+use crate::task_manager::TaskManager;
 use tracing::instrument;
 
 pub fn service(manager: TaskManager) -> TaskServiceServer<MyTaskService> {
