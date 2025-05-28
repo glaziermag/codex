@@ -1,1 +1,27 @@
 # codex
+
+This repository contains a minimal gRPC API exposing a `TaskService`.
+Tasks are stored in PostgreSQL via `PostgresStore` and can be streamed to
+clients via server side streaming.
+
+## Building proto files
+
+Python gRPC stubs are generated from `taskd_api/protos/task.proto` using
+`grpcio-tools`:
+
+```bash
+python -m grpc_tools.protoc -I taskd_api/protos \
+    --python_out=taskd_api/protos \
+    --grpc_python_out=taskd_api/protos \
+    taskd_api/protos/task.proto
+```
+
+## Running the server
+
+```bash
+python -m taskd_api.service
+```
+
+The service listens on port `50051` by default and requires a running
+PostgreSQL database configured via the `DATABASE_URL` environment
+variable.

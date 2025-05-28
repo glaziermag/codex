@@ -1,0 +1,25 @@
+syntax = "proto3";
+package taskd;
+
+message Task {
+  int32 id = 1;
+  string name = 2;
+}
+
+message CreateTaskRequest {
+  string name = 1;
+}
+
+message GetTaskRequest {
+  int32 id = 1;
+}
+
+message StreamTasksRequest {
+  int32 limit = 1;
+}
+
+service TaskService {
+  rpc CreateTask (CreateTaskRequest) returns (Task);
+  rpc GetTask (GetTaskRequest) returns (Task);
+  rpc StreamTasks (StreamTasksRequest) returns (stream Task);
+}
