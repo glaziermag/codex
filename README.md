@@ -25,3 +25,8 @@ python -m taskd_api.service
 The service listens on port `50051` by default and requires a running
 PostgreSQL database configured via the `DATABASE_URL` environment
 variable.
+
+## Observability
+
+Tracing is exported using the OTLP protocol. Example Grafana dashboard and
+a Prometheus `ServiceMonitor` can be found in the `monitoring/` directory.

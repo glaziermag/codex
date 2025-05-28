@@ -1,4 +1,5 @@
 use std::sync::{Arc, Mutex};
+use tracing::instrument;
 
 #[derive(Clone, Default)]
 pub struct TaskManager {
@@ -13,9 +14,12 @@ pub struct Task {
 
 impl TaskManager {
     pub fn new() -> Self {
-        Self { inner: Arc::new(Mutex::new(Vec::new())) }
+        Self {
+            inner: Arc::new(Mutex::new(Vec::new())),
+        }
     }
 
+    #[instrument]
     pub fn create_task(&self, title: String) -> Task {
         let mut tasks = self.inner.lock().unwrap();
         let id = tasks.len() as i32 + 1;
@@ -24,6 +28,7 @@ impl TaskManager {
         task
     }
 
+    #[instrument]
     pub fn list_tasks(&self) -> Vec<Task> {
         let tasks = self.inner.lock().unwrap();
         tasks.clone()
