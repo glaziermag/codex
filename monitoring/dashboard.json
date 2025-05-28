@@ -1,0 +1,12 @@
+{
+  "title": "Codex Tasks",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "gRPC Requests",
+      "targets": [
+        {"expr": "rate(grpc_server_handled_total[5m])", "legendFormat": "{{method}}"}
+      ]
+    }
+  ]
+}

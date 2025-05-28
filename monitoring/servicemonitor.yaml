@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: codex
+  labels:
+    app: codex
+spec:
+  selector:
+    matchLabels:
+      app: codex
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
