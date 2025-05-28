@@ -28,5 +28,13 @@ variable.
 
 ## Observability
 
-Tracing is exported using the OTLP protocol. Example Grafana dashboard and
-a Prometheus `ServiceMonitor` can be found in the `monitoring/` directory.
+Tracing is exported using the OTLP protocol. An example Grafana dashboard and a Prometheus `ServiceMonitor` can be found in the `monitoring/` directory.
+
+## Development
+
+Use `just` to run common tasks. The `dev` recipe starts the application and `ci` runs the checks used in CI:
+
+```bash
+just dev
+just ci
+
