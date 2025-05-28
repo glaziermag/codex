@@ -34,7 +34,9 @@ fn init_tracing() -> Result<(), Box<dyn std::error::Error>> {
 use std::net::SocketAddr;
 
 pub mod task {
-    tonic::include_proto!("task");
+    pub mod v1 {
+        tonic::include_proto!("task.v1");
+    }
 }
 
 #[tokio::main]

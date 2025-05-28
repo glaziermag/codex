@@ -12,6 +12,6 @@ ci:
     cargo fmt --all -- --check
     cargo clippy --all-targets --all-features -- -D warnings
     cargo test
-    buf lint
-    helm lint charts/
+    buf lint proto
+    helm lint charts/taskd
 
